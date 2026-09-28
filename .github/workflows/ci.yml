@@ -1,12 +1,12 @@
-name: CI
+name: Basic CI
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
+
+env:
+  PROJECT_NAME: github-actions-fundamentals
+  ENVIRONMENT: development
 
 jobs:
   build:
@@ -16,5 +16,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run CI
-        run: echo "CI workflow is running successfully!"
+      - name: Display environment variables
+        run: |
+          echo "Project: $PROJECT_NAME"
+          echo "Environment: $ENVIRONMENT"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch/Ref: $GITHUB_REF"
+
+      - name: Run CI test
+        run: |
+          echo "GitHub Actions CI workflow is running"
+          echo "CI workflow completed successfully"
+
+      - name: Understand GitHub Secrets
+        run: |
+          echo "Secrets should be stored in GitHub Secrets."
+          echo "Never hard-code passwords, tokens, or API keys."
