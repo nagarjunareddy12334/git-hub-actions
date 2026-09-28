@@ -1,39 +1,38 @@
 name: CI
-
+ 
 on:
   push:
   pull_request:
-
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+ 
     env:
       APP_NAME: My-CI-Project
-      ENVIRONMENT: development
-
+ 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Display environment variables
+ 
+      - name: Display environment information
         run: |
           echo "Application: $APP_NAME"
-          echo "Environment: $ENVIRONMENT"
           echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch/Ref: $GITHUB_REF"
           echo "Commit: $GITHUB_SHA"
-
-      - name: Check GitHub Secret
-        env:
-          MY_SECRET: ${{ secrets.MY_SECRET }}
-        run: |
-          if [ -n "$MY_SECRET" ]; then
-            echo "Secret is available"
-          else
-            echo "Secret is missing"
-            exit 1
-          fi
-
+ 
       - name: Run CI test
         run: |
+          echo "Running CI tests..."
           echo "CI workflow completed successfully!"
+      - name: Check secret configuration
+        env:
+          DEMO_TOKEN: ${{ secrets['DEMO_TOKEN'] }}
+        run: |
+          if [ -n "$DEMO_TOKEN" ]; then
+            echo "Demo secret is configured"
+          else
+            echo "Demo secret is not configured"
+          fi    
+          
