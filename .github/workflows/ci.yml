@@ -1,8 +1,13 @@
 name: CI
  
 on:
-  push:
-  pull_request:
+ workflow_dispatch:
+
+  
+env:
+   APP_VERSION: 1.0.0
+
+    
  
 jobs:
   build:
@@ -12,8 +17,7 @@ jobs:
       APP_NAME: My-CI-Project
  
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      
  
       - name: Display environment information
         run: |
@@ -21,18 +25,21 @@ jobs:
           echo "Repository: $GITHUB_REPOSITORY"
           echo "Branch/Ref: $GITHUB_REF"
           echo "Commit: $GITHUB_SHA"
- 
+    
+      - name: Calling the variable at project level
+        run: |
+          echo "Appliaction version: $APP_VERSION"
+
+      - name: calling the variable at step level
+        env:
+          STEP_MESSAGE: This is a step-level variable
+        run: 'echo "Step message: $STEP_MESSAGE"'
+      - name: calling the gobal variable 
+        run: echo  "${{ vars.PERSON_NAME }}" 
+      - name: calling the secret var
+        run: echo  "${{ secrets.DEMO_TOKEN }}"
+
       - name: Run CI test
         run: |
           echo "Running CI tests..."
           echo "CI workflow completed successfully!"
-      - name: Check secret configuration
-        env:
-          DEMO_TOKEN: ${{ secrets['DEMO_TOKEN'] }}
-        run: |
-          if [ -n "$DEMO_TOKEN" ]; then
-            echo "Demo secret is configured"
-          else
-            echo "Demo secret is not configured"
-          fi    
-          
